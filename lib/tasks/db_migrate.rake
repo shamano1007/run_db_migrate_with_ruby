@@ -1,7 +1,6 @@
 # NOTE: 参考
 # activerecord/lib/active_record/railties/databases.rake
 
-require 'active_record'
 require 'yaml'
 require 'erb'
 
