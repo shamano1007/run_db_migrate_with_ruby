@@ -4,9 +4,6 @@
 require 'yaml'
 require 'erb'
 
-MIGRATION_PATH = 'db/migrate'
-DB_SETTING_PATH = './config/database.yml'
-
 namespace :db do
   desc 'Create database'
   task create: :environment do
@@ -25,7 +22,7 @@ namespace :db do
 
   desc 'Migrate database'
   task migrate: :environment do
-    ActiveRecord::Migrator.migrate(MIGRATION_PATH, ENV['VERSION'] ? ENV['VERSION'].to_i : nil)
+    ActiveRecord::Migrator.migrate(Config.migration_path, ENV['VERSION'] ? ENV['VERSION'].to_i : nil)
   end
 
   desc 'Rolls the schema back to the previous version (specify steps w/ STEP=n)'
@@ -35,7 +32,7 @@ namespace :db do
   end
 
   task :environment do
-    db_confs = YAML.load(ERB.new(File.read(DB_SETTING_PATH)).result)
+    db_confs = YAML.load(ERB.new(File.read(Config.db_setting_path)).result)
     ActiveRecord::Base.configurations = db_confs
     # `rake ENV=development`/`rake ENV=production`で切り替え可能
     ActiveRecord::Base.establish_connection(database_config)
