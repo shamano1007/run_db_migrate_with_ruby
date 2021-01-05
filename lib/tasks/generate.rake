@@ -1,5 +1,4 @@
 require './lib/generators/generator'
-require 'pry'
 
 desc 'generator'
 task :generate do

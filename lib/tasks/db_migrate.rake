@@ -15,19 +15,19 @@ namespace :db do
     ActiveRecord::Tasks::DatabaseTasks.drop(database_config)
   end
 
-  desc "Retrieves the current schema version number"
+  desc 'Retrieves the current schema version number'
   task version: :environment do
     puts "Current version: #{ActiveRecord::Base.connection.migration_context.current_version}"
   end
 
   desc 'Migrate database'
   task migrate: :environment do
-    ActiveRecord::Migrator.migrate(Config.migration_path, ENV['VERSION'] ? ENV['VERSION'].to_i : nil)
+    ActiveRecord::Tasks::DatabaseTasks.migrate
   end
 
   desc 'Rolls the schema back to the previous version (specify steps w/ STEP=n)'
-  task :rollback do
-    step = ENV["STEP"] ? ENV["STEP"].to_i : 1
+  task rollback: :environment do
+    step = ENV['STEP'] ? ENV['STEP'].to_i : 1
     ActiveRecord::Base.connection.migration_context.rollback(step)
   end
 
@@ -36,7 +36,7 @@ namespace :db do
     ActiveRecord::Base.configurations = db_confs
     # `rake ENV=development`/`rake ENV=production`で切り替え可能
     ActiveRecord::Base.establish_connection(database_config)
-    ActiveRecord::Base.logger = Logger.new("log/database.log")
+    ActiveRecord::Base.logger = Logger.new('log/database.log')
   end
 
   def database_config

@@ -44,6 +44,7 @@ class Generator < Thor::Group
   private
 
   def generate_model
+    @migration_class_name = "Create#{@migration_class_name}"
     template(
       'templates/model.rb.tt',
       "#{Config.model_path}/#{file_name}.rb"
