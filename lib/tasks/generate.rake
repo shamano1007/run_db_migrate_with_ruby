@@ -6,6 +6,7 @@ task :generate do
 
   GeneratorUtil::CLI.start(ARGV)
 end
+desc 'generator'
 task g: ['generate']
 
 # generateタスクの引数をスペースで渡すために設定
